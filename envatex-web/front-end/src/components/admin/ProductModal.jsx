@@ -20,6 +20,14 @@ function ProductModal({ show, handleClose, handleSubmit, productData }) {
     }
   }, [productData]);
 
+  useEffect(() => {
+    if (show === false) {
+      // Reinicia el formulario al cerrar el modal
+      setFormData({ name: '', sku: '', description: '', image_url: '' });
+      setImageFile(null);
+    }
+  }, [show]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));

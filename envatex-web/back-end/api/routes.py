@@ -53,7 +53,6 @@ def get_products():
 @jwt_required()
 def create_product():
     """Crea un nuevo producto (requiere role=admin)."""
-    # Ahora aceptamos multipart/form-data: request.form + request.files
     claims = get_jwt()
     if claims.get('role') != 'admin':
         return jsonify({'error': 'Prohibido - se requiere rol de administrador'}), 403
@@ -76,6 +75,11 @@ def create_product():
 
     if not name:
         return jsonify({'error': 'El nombre es obligatorio'}), 400
+
+    # Verificar unicidad de name y sku
+    existing_product = Product.query.filter((Product.name == name) | (Product.sku == sku)).first()
+    if existing_product:
+        return jsonify({'error': 'Ya existe un producto con el mismo nombre o SKU'}), 400
 
     try:
         p = Product(name=name, image_url=image_url, description=description, sku=sku)

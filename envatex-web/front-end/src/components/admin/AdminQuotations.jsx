@@ -122,16 +122,18 @@ function AdminQuotations() {
                   </div>
 
                   <div>
-                    <Button
-                      variant="link"
-                      size="sm"
-                      className="text-danger p-0 me-3"
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      className="text-danger p-0 me-3 btn btn-link btn-sm"
                       title="Eliminar cotización"
                       aria-label={`Eliminar cotización ${quotation.id ?? idx}`}
                       onClick={e => { e.stopPropagation(); handleDeleteQuotation(quotation.id); }}
+                      onKeyPress={e => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); handleDeleteQuotation(quotation.id); } }}
+                      style={{ cursor: 'pointer', display: 'inline-block' }}
                     >
                       <i className="fas fa-trash-alt"></i>
-                    </Button>
+                    </span>
                   </div>
                 </div>
               </Accordion.Header>

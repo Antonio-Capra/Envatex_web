@@ -22,6 +22,7 @@ body {
   background-color: var(--primary-navy) !important;
   color: white !important;
   box-shadow: 0 4px 14px rgba(13,37,63,0.12);
+  z-index: 1050; /* Asegura que el Navbar esté siempre encima de otros elementos */
 }
 .custom-navbar .navbar-brand{
   color: white !important;

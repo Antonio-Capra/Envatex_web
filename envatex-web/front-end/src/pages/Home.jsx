@@ -8,16 +8,40 @@ import QuotationForm from '../components/QuotationForm';
 
 function Home({ items = [], onAddToCart, onRemoveItem, onClearCart }) {
   return (
-    <Container className="my-4">
-      <Row>
-        <Col md={8}>
-          <ProductList onAddToCart={onAddToCart} />
-        </Col>
-        <Col md={4}>
-          <QuotationForm items={items} onRemoveItem={onRemoveItem} onClearCart={onClearCart} />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <style>
+        {`
+            @media (max-width: 768px) {
+              .sticky-col {
+                position: static;
+                top: auto;
+              }
+            }
+
+            @media (min-width: 769px) {
+              .sticky-col {
+                position: fixed;
+                top: 120px;
+                right: 0;
+                z-index: 5;
+                width: 33.333%;
+              }
+            }
+          `}
+      </style>
+      <Container className="my-4" style={{ overflow: 'visible' }}>
+        <Row>
+          <Col md={8}>
+            <ProductList onAddToCart={onAddToCart} />
+          </Col>
+          <Col md={4}>
+            <div style={{ position: 'sticky', top: '100px' }}>
+              <QuotationForm items={items} onRemoveItem={onRemoveItem} onClearCart={onClearCart} />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 

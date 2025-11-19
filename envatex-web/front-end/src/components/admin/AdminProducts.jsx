@@ -167,7 +167,10 @@ function AdminProducts() {
 
       <ProductModal
         show={showModal}
-        handleClose={handleCloseModal}
+        handleClose={() => {
+          handleCloseModal();
+          setEditingProduct(null); // Reinicia el estado del producto al cerrar el modal
+        }}
         handleSubmit={handleSaveProduct}
         productData={editingProduct}
       />

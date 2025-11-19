@@ -116,7 +116,7 @@ function ProductList({ onAddToCart }) {
             <Col key={p.id} xs={12} sm={6} md={4} className="mb-4">
               <Card className="h-100 shadow-sm border-0 product-card-hover">
                 {p.image_url ? (
-                  <div style={{ height: '200px', overflow: 'hidden' }}>
+                  <div style={{ height: '200px', overflow: 'visible' }}>
                     <Card.Img
                       variant="top"
                       src={p.image_url}
