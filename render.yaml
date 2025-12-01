@@ -34,9 +34,8 @@ services:
         value: https://envatex-backend.onrender.com
 
   # Base de datos PostgreSQL
-  - type: pgsql
-    name: envatex-db
-    region: oregon
-    plan: free
+databases:
+  - name: envatex-db
     databaseName: envatex
-    databaseUser: envatex_user
+    user: envatex_user
+    plan: free
