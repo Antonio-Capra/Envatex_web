@@ -95,6 +95,20 @@ def create_app():
                 except Exception as e:
                     print('AUTO_CREATE_ADMIN failed:', e)
 
+    @app.route('/')
+    def home():
+        return jsonify({
+            'status': 'ok',
+            'message': 'Envatex API is running!',
+            'version': '1.0.0',
+            'endpoints': {
+                'health': '/api/health',
+                'products': '/api/products',
+                'quotations': '/api/quotations',
+                'auth': '/api/auth/login'
+            }
+        })
+
     @app.route('/api/health')
     def health_check():
         return jsonify({'status': 'ok', 'message': 'Envatex API is healthy!'})
