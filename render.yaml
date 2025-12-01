@@ -5,8 +5,9 @@ services:
     env: python
     region: oregon
     plan: free
-    buildCommand: "cd backend && pip install -r requirements.txt"
-    startCommand: "cd backend && gunicorn wsgi:app"
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn wsgi:app"
     envVars:
       - key: FLASK_APP
         value: app.py
@@ -25,8 +26,9 @@ services:
   - type: web
     name: envatex-frontend
     env: static
-    buildCommand: "cd frontend && npm install && npm run build"
-    staticPublishPath: ./frontend/build
+    rootDir: frontend
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: build
     envVars:
       - key: REACT_APP_API_URL
         value: https://envatex-backend.onrender.com
