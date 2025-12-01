@@ -11,6 +11,47 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from app import create_app, db
 from models import User, Product, Quotation, QuotationItem
+from sqlalchemy import text
+
+def sync_alembic_version():
+    """Sincroniza la tabla alembic_version con el estado actual de la base de datos."""
+    try:
+        # Verificar si las tablas existen
+        result = db.session.execute(text(
+            "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'products')"
+        ))
+        products_exists = result.scalar()
+        
+        # Verificar si la tabla alembic_version existe
+        result = db.session.execute(text(
+            "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'alembic_version')"
+        ))
+        alembic_exists = result.scalar()
+        
+        if products_exists and not alembic_exists:
+            # Las tablas existen pero no hay registro de migraciones
+            print("🔄 Syncing alembic_version table...")
+            db.session.execute(text(
+                "CREATE TABLE alembic_version (version_num VARCHAR(32) NOT NULL, CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num))"
+            ))
+            db.session.execute(text(
+                "INSERT INTO alembic_version (version_num) VALUES ('fbde8b5cf973')"
+            ))
+            db.session.commit()
+            print("✅ Alembic version table synced")
+        elif alembic_exists:
+            result = db.session.execute(text("SELECT version_num FROM alembic_version"))
+            versions = [row[0] for row in result]
+            if not versions and products_exists:
+                print("🔄 Marking initial migration as applied...")
+                db.session.execute(text(
+                    "INSERT INTO alembic_version (version_num) VALUES ('fbde8b5cf973')"
+                ))
+                db.session.commit()
+                print("✅ Initial migration marked as applied")
+    except Exception as e:
+        print(f"⚠️ Warning during alembic sync: {e}")
+        db.session.rollback()
 
 def init_database():
     """Inicializa la base de datos y crea el usuario admin."""
@@ -18,10 +59,13 @@ def init_database():
     
     with app.app_context():
         try:
+            # Sincronizar alembic_version antes de crear tablas
+            sync_alembic_version()
+            
             # Crear todas las tablas
-            print("🔄 Creating database tables...")
+            print("🔄 Creating/verifying database tables...")
             db.create_all()
-            print("✅ Database tables created successfully")
+            print("✅ Database tables created/verified")
             
             # Crear usuario admin
             admin_user = os.getenv('ADMIN_USER', 'admin')
