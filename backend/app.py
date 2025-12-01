@@ -76,24 +76,29 @@ def create_app():
             secure=True
         )
 
-    # --- Auto-crear usuario admin si se solicita (solo para desarrollo) ---
-    # --- Auto-crear usuario admin si se solicita (solo para desarrollo) ---
-    if os.getenv('AUTO_CREATE_ADMIN', 'false').lower() == 'true':
-        admin_user = os.getenv('ADMIN_USER')
-        admin_pass = os.getenv('ADMIN_PASSWORD')
-        if admin_user and admin_pass:
-            with app.app_context():
-                try:
-                    from models import User
-                    existing = User.query.filter_by(username=admin_user).first()
-                    if not existing:
-                        u = User(username=admin_user)
-                        u.set_password(admin_pass)
-                        db.session.add(u)
-                        db.session.commit()
-                        print(f"Created admin user '{admin_user}' via AUTO_CREATE_ADMIN")
-                except Exception as e:
-                    print('AUTO_CREATE_ADMIN failed:', e)
+    # --- Auto-crear tablas y usuario admin en producción ---
+    with app.app_context():
+        try:
+            # Crear todas las tablas si no existen
+            db.create_all()
+            print("✅ Database tables created/verified")
+            
+            # Crear usuario admin automáticamente
+            from models import User
+            admin_user = os.getenv('ADMIN_USER', 'admin')
+            admin_pass = os.getenv('ADMIN_PASSWORD', 'admin123')
+            
+            existing = User.query.filter_by(username=admin_user).first()
+            if not existing:
+                u = User(username=admin_user)
+                u.set_password(admin_pass)
+                db.session.add(u)
+                db.session.commit()
+                print(f"✅ Created admin user '{admin_user}'")
+            else:
+                print(f"ℹ️ Admin user '{admin_user}' already exists")
+        except Exception as e:
+            print(f"❌ Database initialization error: {e}")
 
     @app.route('/')
     def home():
