@@ -129,8 +129,8 @@ def update_quotation(id):
                     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
                         <!-- Header con logo -->
                         <div style="text-align: center; margin-bottom: 30px; background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%); padding: 30px 20px; border-radius: 12px 12px 0 0;">
-                            <img src="{logo_url}" alt="Envatex Logo" style="max-width: 150px; height: auto; margin-bottom: 15px;" />
-                            <h2 style="color: white; margin: 0; font-size: 24px;">Respuesta a tu cotización</h2>
+                            <img src="{logo_url}" alt="Envatex Logo" style="max-width: 120px; width: 120px; height: auto; display: block; margin: 0 auto 15px;" />
+                            <h2 style="color: white; margin: 0; font-size: 22px;">Respuesta a tu cotización</h2>
                         </div>
                         
                         <!-- Contenido principal -->
@@ -162,8 +162,8 @@ def update_quotation(id):
                             
                             <!-- Footer -->
                             <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center;">
-                                <img src="{logo_url}" alt="Envatex" style="max-width: 100px; height: auto; margin-bottom: 10px; opacity: 0.8;" />
-                                <p style="color: #9ca3af; margin: 0; font-size: 13px;">Tu proveedor de confianza en envases y embalajes</p>
+                                <img src="{logo_url}" alt="Envatex" style="max-width: 80px; width: 80px; height: auto; display: block; margin: 0 auto 10px; opacity: 0.8;" />
+                                <p style="color: #9ca3af; margin: 0; font-size: 12px;">Tu proveedor de confianza en envases y embalajes</p>
                             </div>
                         </div>
                     </div>
