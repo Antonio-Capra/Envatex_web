@@ -14,3 +14,7 @@ python-dotenv
 Flask-JWT-Extended
 # Cloudinary SDK for image uploads
 cloudinary
+# Production WSGI server
+gunicorn
+# PostgreSQL adapter
+psycopg2-binary
