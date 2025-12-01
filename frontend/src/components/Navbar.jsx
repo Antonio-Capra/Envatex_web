@@ -162,43 +162,45 @@ function Navbar({ isAuthenticated, isMenuOpen, setIsMenuOpen }) {
 
                 {/* Mobile admin layout */}
                 <div className="lg:tw-hidden tw-w-full tw-mt-4 tw-px-2">
-                  {location.pathname !== '/admin' && (
-                    <Link 
-                      to="/admin" 
-                      onClick={() => setIsMenuOpen(false)} 
-                      className="tw-block tw-mx-2 tw-my-2 tw-no-underline"
-                      style={{textDecoration: 'none'}}
-                    >
-                      <button 
-                        className="tw-w-full tw-px-5 tw-py-3.5 tw-rounded-lg tw-text-white tw-font-semibold tw-text-sm tw-border-none tw-cursor-pointer tw-transition-all tw-duration-200"
-                        style={{
-                          background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%)'
-                        }}
-                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  <div className="tw-flex tw-gap-2 tw-mx-2">
+                    {location.pathname !== '/admin' && (
+                      <Link 
+                        to="/admin" 
+                        onClick={() => setIsMenuOpen(false)} 
+                        className="tw-flex-1 tw-no-underline"
+                        style={{textDecoration: 'none'}}
                       >
-                        <i className="fas fa-columns tw-mr-2"></i>
-                        Panel
-                      </button>
-                    </Link>
-                  )}
-                  <button
-                    onClick={() => {
-                      localStorage.removeItem('access_token');
-                      window.dispatchEvent(new Event('authChanged'));
-                      navigate('/admin/login');
-                      setIsMenuOpen(false);
-                    }}
-                    className="tw-w-full tw-mx-2 tw-my-2 tw-px-5 tw-py-3.5 tw-rounded-lg tw-text-white tw-font-semibold tw-text-sm tw-cursor-pointer tw-transition-all tw-duration-200 tw-border-none"
-                    style={{
-                      background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%)'
-                    }}
-                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                  >
-                    <i className="fas fa-sign-out-alt tw-mr-2"></i>
-                    Cerrar sesión
-                  </button>
+                        <button 
+                          className="tw-w-full tw-px-4 tw-py-3 tw-rounded-lg tw-text-white tw-font-semibold tw-text-sm tw-border-none tw-cursor-pointer tw-transition-all tw-duration-200"
+                          style={{
+                            background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%)'
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        >
+                          <i className="fas fa-columns tw-mr-2"></i>
+                          Panel
+                        </button>
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => {
+                        localStorage.removeItem('access_token');
+                        window.dispatchEvent(new Event('authChanged'));
+                        navigate('/admin/login');
+                        setIsMenuOpen(false);
+                      }}
+                      className={`tw-px-4 tw-py-3 tw-rounded-lg tw-text-white tw-font-semibold tw-text-sm tw-cursor-pointer tw-transition-all tw-duration-200 tw-border-none ${location.pathname !== '/admin' ? 'tw-flex-1' : 'tw-w-full'}`}
+                      style={{
+                        background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%)'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    >
+                      <i className="fas fa-sign-out-alt tw-mr-2"></i>
+                      Cerrar sesión
+                    </button>
+                  </div>
                 </div>
               </>
             )}
