@@ -86,7 +86,14 @@ def update_quotation(id):
         quotation.status = 'Responded'
         db.session.commit()
 
-        # Enviar email al cliente con la respuesta
+        # Enviar email al cliente con la respuesta (deshabilitado temporalmente)
+        # TODO: Configurar servicio de email alternativo (SendGrid, Mailgun, etc.)
+        email_enabled = os.getenv('ENABLE_EMAIL', 'False') == 'True'
+        
+        if not email_enabled:
+            print("ℹ️ Email sending is disabled")
+            return jsonify({'message': 'Cotización actualizada correctamente', 'quotation': quotation.serialize()}), 200
+        
         try:
             import os
             sender_email = os.getenv('MAIL_DEFAULT_SENDER') or os.getenv('MAIL_USERNAME')
