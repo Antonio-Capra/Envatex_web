@@ -86,6 +86,9 @@ def update_quotation(id):
         quotation.admin_response = data.get('admin_response')
         quotation.status = 'Responded'
         db.session.commit()
+        
+        print(f"✅ Quotation {id} updated successfully")
+        print(f"📧 Email enabled: {os.getenv('ENABLE_EMAIL', 'False')}")
 
         # Enviar email al cliente con la respuesta (deshabilitado temporalmente)
         # TODO: Configurar servicio de email alternativo (SendGrid, Mailgun, etc.)
@@ -183,6 +186,9 @@ def update_quotation(id):
             return jsonify({'message': 'Cotización actualizada (error al enviar email)', 'quotation': quotation.serialize()}), 200
 
     except Exception as e:
+        print(f"❌ Error updating quotation: {e}")
+        import traceback
+        traceback.print_exc()
         db.session.rollback()
         return jsonify({'error': 'No se pudo actualizar la cotización', 'details': str(e)}), 500
 
