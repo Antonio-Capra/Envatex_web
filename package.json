@@ -5,7 +5,7 @@
   "scripts": {
     "install:backend": "cd backend && pip install -r requirements.txt",
     "install:frontend": "cd frontend && npm install",
-    "install": "npm run install:backend && npm run install:frontend",
+    "install:all": "npm run install:backend && npm run install:frontend",
     "start:backend": "cd backend && flask run --host=0.0.0.0",
     "start:frontend": "cd frontend && npm start",
     "start": "echo 'Para iniciar el backend: npm run start:backend' && echo 'Para iniciar el frontend: npm run start:frontend'"
