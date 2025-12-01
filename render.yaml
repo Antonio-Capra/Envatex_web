@@ -7,7 +7,7 @@ services:
     plan: free
     rootDir: backend
     buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
-    startCommand: "flask db upgrade && python init_db.py && gunicorn --bind 0.0.0.0:$PORT wsgi:app"
+    startCommand: "python scripts/sync_migrations.py && flask db upgrade && python init_db.py && gunicorn --bind 0.0.0.0:$PORT wsgi:app"
     envVars:
       - key: FLASK_APP
         value: app.py
