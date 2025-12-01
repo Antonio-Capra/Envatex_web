@@ -90,6 +90,12 @@ def update_quotation(id):
         try:
             import os
             sender_email = os.getenv('MAIL_DEFAULT_SENDER') or os.getenv('MAIL_USERNAME')
+            
+            # Verificar que tenemos las credenciales necesarias
+            if not sender_email or not os.getenv('MAIL_PASSWORD'):
+                print("⚠️ Email credentials not configured, skipping email send")
+                return jsonify({'message': 'Cotización actualizada (email no configurado)', 'quotation': quotation.serialize()}), 200
+            
             msg = Message(
                 subject='Respuesta a tu cotización - Envatex',
                 sender=sender_email,
@@ -159,11 +165,14 @@ def update_quotation(id):
             """
             
             mail.send(msg)
+            print(f"✅ Email sent successfully to {quotation.customer_email}")
+            return jsonify({'message': 'Cotización actualizada y email enviado correctamente', 'quotation': quotation.serialize()}), 200
         except Exception as email_error:
             # Si falla el email, log pero no fallar la actualización
-            print(f"Error sending email: {email_error}")
-
-        return jsonify({'message': 'Cotización actualizada y email enviado correctamente', 'quotation': quotation.serialize()}), 200
+            print(f"⚠️ Error sending email: {email_error}")
+            import traceback
+            traceback.print_exc()
+            return jsonify({'message': 'Cotización actualizada (error al enviar email)', 'quotation': quotation.serialize()}), 200
 
     except Exception as e:
         db.session.rollback()
