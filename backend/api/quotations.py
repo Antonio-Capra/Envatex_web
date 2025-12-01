@@ -99,7 +99,6 @@ def update_quotation(id):
             return jsonify({'message': 'Cotización actualizada correctamente', 'quotation': quotation.serialize()}), 200
         
         try:
-            import os
             sender_email = os.getenv('MAIL_DEFAULT_SENDER') or os.getenv('MAIL_USERNAME')
             
             # Verificar que tenemos las credenciales necesarias
