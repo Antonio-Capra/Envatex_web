@@ -13,6 +13,28 @@ from app import create_app, db
 from models import User, Product, Quotation, QuotationItem
 from sqlalchemy import text
 
+def add_customer_comments_column():
+    """Agrega la columna customer_comments si no existe."""
+    try:
+        # Verificar si la columna ya existe
+        result = db.session.execute(text(
+            "SELECT column_name FROM information_schema.columns WHERE table_name='quotations' AND column_name='customer_comments'"
+        ))
+        column_exists = result.scalar()
+        
+        if not column_exists:
+            print("🔄 Adding customer_comments column...")
+            db.session.execute(text(
+                "ALTER TABLE quotations ADD COLUMN customer_comments TEXT"
+            ))
+            db.session.commit()
+            print("✅ customer_comments column added")
+        else:
+            print("ℹ️ customer_comments column already exists")
+    except Exception as e:
+        print(f"⚠️ Warning during column addition: {e}")
+        db.session.rollback()
+
 def sync_alembic_version():
     """Sincroniza la tabla alembic_version con el estado actual de la base de datos."""
     try:
@@ -37,6 +59,14 @@ def sync_alembic_version():
             db.session.execute(text(
                 "INSERT INTO alembic_version (version_num) VALUES ('fbde8b5cf973')"
             ))
+            # Marcar también la segunda migración como aplicada si customer_comments ya existe
+            result = db.session.execute(text(
+                "SELECT column_name FROM information_schema.columns WHERE table_name='quotations' AND column_name='customer_comments'"
+            ))
+            if result.scalar():
+                db.session.execute(text(
+                    "INSERT INTO alembic_version (version_num) VALUES ('c5b4823dc4e3')"
+                ))
             db.session.commit()
             print("✅ Alembic version table synced")
         elif alembic_exists:
@@ -47,6 +77,14 @@ def sync_alembic_version():
                 db.session.execute(text(
                     "INSERT INTO alembic_version (version_num) VALUES ('fbde8b5cf973')"
                 ))
+                # Marcar también la segunda migración si customer_comments ya existe
+                result = db.session.execute(text(
+                    "SELECT column_name FROM information_schema.columns WHERE table_name='quotations' AND column_name='customer_comments'"
+                ))
+                if result.scalar():
+                    db.session.execute(text(
+                        "INSERT INTO alembic_version (version_num) VALUES ('c5b4823dc4e3')"
+                    ))
                 db.session.commit()
                 print("✅ Initial migration marked as applied")
     except Exception as e:
@@ -66,6 +104,9 @@ def init_database():
             print("🔄 Creating/verifying database tables...")
             db.create_all()
             print("✅ Database tables created/verified")
+            
+            # Agregar columna customer_comments si no existe
+            add_customer_comments_column()
             
             # Crear usuario admin
             admin_user = os.getenv('ADMIN_USER', 'admin')
