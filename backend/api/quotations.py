@@ -4,6 +4,8 @@ from flask import Blueprint, request, jsonify
 from app import db, mail
 from flask_jwt_extended import jwt_required, get_jwt
 from flask_mail import Message
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 quotations_bp = Blueprint('quotations', __name__, url_prefix='/api/quotations')
 
@@ -99,18 +101,13 @@ def update_quotation(id):
             return jsonify({'message': 'Cotización actualizada correctamente', 'quotation': quotation.serialize()}), 200
         
         try:
-            sender_email = os.getenv('MAIL_DEFAULT_SENDER') or os.getenv('MAIL_USERNAME')
+            sender_email = os.getenv('MAIL_DEFAULT_SENDER', 'envatex.ar@gmail.com')
+            sendgrid_api_key = os.getenv('SENDGRID_API_KEY')
             
-            # Verificar que tenemos las credenciales necesarias
-            if not sender_email or not os.getenv('MAIL_PASSWORD'):
-                print("⚠️ Email credentials not configured, skipping email send")
+            # Verificar que tenemos la API key de SendGrid
+            if not sendgrid_api_key:
+                print("⚠️ SendGrid API key not configured, skipping email send")
                 return jsonify({'message': 'Cotización actualizada (email no configurado)', 'quotation': quotation.serialize()}), 200
-            
-            msg = Message(
-                subject='Respuesta a tu cotización - Envatex',
-                sender=sender_email,
-                recipients=[quotation.customer_email]
-            )
             
             # Construir lista de productos
             products_html = ""
@@ -126,7 +123,7 @@ def update_quotation(id):
             frontend_url = os.getenv('FRONTEND_URL', 'https://envatex-frontend.onrender.com')
             logo_url = f"{frontend_url}/2.png"
             
-            msg.html = f"""
+            html_content = f"""
             <html>
                 <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; background-color: #f9fafb;">
                     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -174,8 +171,18 @@ def update_quotation(id):
             </html>
             """
             
-            mail.send(msg)
-            print(f"✅ Email sent successfully to {quotation.customer_email}")
+            # Enviar email usando SendGrid
+            message = Mail(
+                from_email=sender_email,
+                to_emails=quotation.customer_email,
+                subject='Respuesta a tu cotización - Envatex',
+                html_content=html_content
+            )
+            
+            sg = SendGridAPIClient(sendgrid_api_key)
+            response = sg.send(message)
+            
+            print(f"✅ Email sent successfully to {quotation.customer_email} (Status: {response.status_code})")
             return jsonify({'message': 'Cotización actualizada y email enviado correctamente', 'quotation': quotation.serialize()}), 200
         except Exception as email_error:
             # Si falla el email, log pero no fallar la actualización

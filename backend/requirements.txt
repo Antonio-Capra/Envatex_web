@@ -16,6 +16,7 @@ Flask-JWT-Extended
 cloudinary
 # Email support
 Flask-Mail
+sendgrid
 # Production WSGI server
 gunicorn
 # PostgreSQL adapter
