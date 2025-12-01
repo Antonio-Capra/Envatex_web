@@ -7,19 +7,19 @@ export default function Landing() {
   const features = [
     {
       icon: 'fa-tshirt',
-      title: 'Productos Personalizados',
+      title: 'Productos personalizados',
       desc: 'Soluciones textiles adaptadas a las necesidades de tu empresa, con calidad garantizada.',
       color: '#10b981' // Verde esmeralda
     },
     {
       icon: 'fa-shipping-fast',
-      title: 'Envíos Rápidos',
+      title: 'Envíos rápidos',
       desc: 'Logística eficiente para que recibas tus productos en tiempo récord, en todo el país.',
       color: '#06b6d4' // Cyan
     },
     {
       icon: 'fa-user-shield',
-      title: 'Atención Especializada',
+      title: 'Atención especializada',
       desc: 'Nuestro equipo te acompaña en cada paso, desde la cotización hasta la entrega final.',
       color: '#3b82f6' // Azul
     },
@@ -49,7 +49,7 @@ export default function Landing() {
                   fontSize: 'clamp(2rem, 5vw, 3.5rem)',
                   letterSpacing: '-0.02em'
                 }}>
-              Soluciones Textiles Profesionales
+              Soluciones textiles profesionales
             </h1>
 
             {/* Descripción refinada */}
@@ -75,7 +75,7 @@ export default function Landing() {
                 e.currentTarget.style.boxShadow = '0 10px 30px rgba(59, 130, 246, 0.3)';
               }}
             >
-              Solicitar Cotización
+              Solicitar cotización
               <i className="fas fa-arrow-right tw-ml-3"></i>
             </button>
           </div>
@@ -164,7 +164,7 @@ export default function Landing() {
                 e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.15)';
               }}
             >
-              Comenzar Ahora
+              Comenzar ahora
               <i className="fas fa-arrow-right tw-ml-3"></i>
             </button>
           </div>

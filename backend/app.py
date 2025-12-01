@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
+from flask_mail import Mail
 
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
@@ -19,6 +20,7 @@ load_dotenv()
 # sin causar importaciones circulares.
 db = SQLAlchemy()
 migrate = Migrate()
+mail = Mail()
 
 
 import cloudinary
@@ -51,6 +53,15 @@ def create_app():
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret')
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', app.config['SECRET_KEY'])
     jwt = JWTManager(app)
+    
+    # Configurar Flask-Mail
+    app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+    app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+    app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True') == 'True'
+    app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+    app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+    app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', os.getenv('MAIL_USERNAME'))
+    mail.init_app(app)
     
     # Configura CORS para permitir peticiones desde el front-end
     CORS(app, resources={r"/*": {"origins": "*"}})

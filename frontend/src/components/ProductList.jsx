@@ -79,7 +79,7 @@ function ProductList({ onAddToCart, onRemoveItem, items = [] }) {
       {/* Encabezado moderno */}
       <div className="tw-mb-8">
         <h2 className="tw-font-bold tw-mb-2 tw-text-slate-600 tw-leading-tight">
-          Nuestros Productos
+          Nuestros productos
         </h2>
         <p className="tw-text-slate-600 tw-text-lg">
           Selecciona los ítems que necesitas y añádelos a tu cotización.

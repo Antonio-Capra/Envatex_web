@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
+  const [customerComments, setCustomerComments] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState(null); // null | 'loading' | 'success' | 'error'
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -22,11 +23,13 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
       const payload = {
         customer_name: customerName,
         customer_email: customerEmail,
+        customer_comments: customerComments,
         items: payloadItems,
       };
       await axios.post(`${API_BASE}/api/quotations`, payload);
       setCustomerName('');
       setCustomerEmail('');
+      setCustomerComments('');
       if (typeof onClearCart === 'function') onClearCart();
       setSubmissionStatus('success');
       await Swal.fire({
@@ -56,7 +59,7 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
       >
         <h4 className="tw-text-white tw-font-bold tw-text-xl tw-flex tw-items-center tw-gap-3">
           <i className="fas fa-file-invoice-dollar"></i>
-          Resumen de Cotización
+          Resumen de cotización
         </h4>
       </div>
 
@@ -132,7 +135,7 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
         <Form onSubmit={handleSubmit}>
           <div className="tw-mb-4">
             <label className="tw-block tw-text-sm tw-font-semibold tw-text-slate-700 tw-mb-2">
-              Nombre Completo
+              Nombre completo
             </label>
             <input
               type="text"
@@ -144,9 +147,9 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
             />
           </div>
 
-          <div className="tw-mb-6">
+          <div className="tw-mb-4">
             <label className="tw-block tw-text-sm tw-font-semibold tw-text-slate-700 tw-mb-2">
-              Correo Electrónico
+              Correo electrónico
             </label>
             <input
               type="email"
@@ -155,6 +158,20 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
               className="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-slate-300 tw-rounded-xl focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-transparent tw-transition-all"
               placeholder="ejemplo@correo.com"
               required
+            />
+          </div>
+
+          <div className="tw-mb-6">
+            <label className="tw-block tw-text-sm tw-font-semibold tw-text-slate-700 tw-mb-2">
+              Comentarios o requisitos especiales
+              <span className="tw-text-slate-400 tw-font-normal tw-ml-1">(Opcional)</span>
+            </label>
+            <textarea
+              value={customerComments}
+              onChange={(e) => setCustomerComments(e.target.value)}
+              className="tw-w-full tw-px-4 tw-py-3 tw-border tw-border-slate-300 tw-rounded-xl focus:tw-ring-2 focus:tw-ring-blue-500 focus:tw-border-transparent tw-transition-all tw-resize-none"
+              placeholder="Ej: necesito entrega urgente, colores específicos, cantidades grandes..."
+              rows="4"
             />
           </div>
 

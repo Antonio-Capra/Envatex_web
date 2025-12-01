@@ -16,6 +16,7 @@ class Quotation(db.Model):
     customer_name: Mapped[str] = mapped_column(String(100))
     customer_email: Mapped[str] = mapped_column(String(100))
     customer_phone: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    customer_comments: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     status: Mapped[str] = mapped_column(String(20), default='Pending')
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     admin_response: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
@@ -33,6 +34,7 @@ class Quotation(db.Model):
             'customer_name': self.customer_name,
             'customer_email': self.customer_email,
             'customer_phone': self.customer_phone,
+            'customer_comments': self.customer_comments,
             'status': self.status,
             'created_at': self.created_at.isoformat() if self.created_at else None,
             'admin_response': self.admin_response,

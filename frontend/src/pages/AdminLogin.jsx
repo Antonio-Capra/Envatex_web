@@ -35,7 +35,7 @@ function AdminLogin() {
             <i className="fas fa-user-shield tw-text-2xl tw-text-white"></i>
           </div>
           <h2 className="tw-text-3xl tw-font-bold tw-text-slate-700 tw-tracking-tight">
-            Panel de Administración
+            Panel de administración
           </h2>
           <p className="tw-text-slate-500 tw-mt-2">Ingresa tus credenciales para continuar</p>
         </div>
@@ -46,7 +46,7 @@ function AdminLogin() {
           <div className="tw-px-8 tw-py-6"
                style={{background: 'linear-gradient(135deg, #64748b 0%, #475569 100%)'}}>
             <h3 className="tw-text-xl tw-font-semibold tw-text-white tw-tracking-wide">
-              Acceso Seguro
+              Acceso seguro
             </h3>
           </div>
 
@@ -119,7 +119,7 @@ function AdminLogin() {
                   e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
                 }}
               >
-                Iniciar Sesión
+                Iniciar sesión
                 <i className="fas fa-sign-in-alt tw-ml-2"></i>
               </button>
             </form>

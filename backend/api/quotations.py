@@ -1,7 +1,8 @@
 """Rutas de cotizaciones."""
 from flask import Blueprint, request, jsonify
-from app import db
+from app import db, mail
 from flask_jwt_extended import jwt_required, get_jwt
+from flask_mail import Message
 
 quotations_bp = Blueprint('quotations', __name__, url_prefix='/api/quotations')
 
@@ -35,7 +36,8 @@ def create_quotation():
         new_quotation = Quotation(
             customer_name=data['customer_name'],
             customer_email=data['customer_email'],
-            customer_phone=data.get('customer_phone')
+            customer_phone=data.get('customer_phone'),
+            customer_comments=data.get('customer_comments')
         )
         db.session.add(new_quotation)
 
@@ -84,7 +86,84 @@ def update_quotation(id):
         quotation.status = 'Responded'
         db.session.commit()
 
-        return jsonify({'message': 'Cotización actualizada correctamente', 'quotation': quotation.serialize()}), 200
+        # Enviar email al cliente con la respuesta
+        try:
+            import os
+            sender_email = os.getenv('MAIL_DEFAULT_SENDER') or os.getenv('MAIL_USERNAME')
+            msg = Message(
+                subject='Respuesta a tu cotización - Envatex',
+                sender=sender_email,
+                recipients=[quotation.customer_email]
+            )
+            
+            # Construir lista de productos
+            products_html = ""
+            for item in quotation.items:
+                products_html += f"""
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ddd;">{item.product.name}</td>
+                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{item.quantity}</td>
+                </tr>
+                """
+            
+            # URL del logo (desde el frontend desplegado o localhost en desarrollo)
+            frontend_url = os.getenv('FRONTEND_URL', 'https://envatex-frontend.onrender.com')
+            logo_url = f"{frontend_url}/2.png"
+            
+            msg.html = f"""
+            <html>
+                <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6; background-color: #f9fafb;">
+                    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+                        <!-- Header con logo -->
+                        <div style="text-align: center; margin-bottom: 30px; background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%); padding: 30px 20px; border-radius: 12px 12px 0 0;">
+                            <img src="{logo_url}" alt="Envatex Logo" style="max-width: 150px; height: auto; margin-bottom: 15px;" />
+                            <h2 style="color: white; margin: 0; font-size: 24px;">Respuesta a tu cotización</h2>
+                        </div>
+                        
+                        <!-- Contenido principal -->
+                        <div style="background-color: white; padding: 30px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                            <p style="font-size: 16px;">Hola <strong style="color: #2563eb;">{quotation.customer_name}</strong>,</p>
+                            <p>Hemos revisado tu solicitud de cotización y tenemos una respuesta para ti:</p>
+                        
+                        <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                            <strong>Respuesta del administrador:</strong>
+                            <p style="margin-top: 10px;">{quotation.admin_response}</p>
+                        </div>
+                        
+                        <h3 style="color: #475569; margin-top: 30px;">Productos solicitados:</h3>
+                        <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                            <thead>
+                                <tr style="background-color: #64748b; color: white;">
+                                    <th style="padding: 10px; border: 1px solid #ddd; text-align: left;">Producto</th>
+                                    <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Cantidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products_html}
+                            </tbody>
+                        </table>
+                        
+                            {f'<div style="background-color: #dbeafe; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #3b82f6;"><p style="margin: 0;"><strong>Tus comentarios:</strong> {quotation.customer_comments}</p></div>' if quotation.customer_comments else ''}
+                            
+                            <p style="margin-top: 30px; font-size: 15px;">Si tienes alguna pregunta adicional, no dudes en contactarnos.</p>
+                            
+                            <!-- Footer -->
+                            <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center;">
+                                <img src="{logo_url}" alt="Envatex" style="max-width: 100px; height: auto; margin-bottom: 10px; opacity: 0.8;" />
+                                <p style="color: #9ca3af; margin: 0; font-size: 13px;">Tu proveedor de confianza en envases y embalajes</p>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+            </html>
+            """
+            
+            mail.send(msg)
+        except Exception as email_error:
+            # Si falla el email, log pero no fallar la actualización
+            print(f"Error sending email: {email_error}")
+
+        return jsonify({'message': 'Cotización actualizada y email enviado correctamente', 'quotation': quotation.serialize()}), 200
 
     except Exception as e:
         db.session.rollback()

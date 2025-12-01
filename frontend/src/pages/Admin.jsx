@@ -30,9 +30,9 @@ function Admin() {
             background: 'linear-gradient(135deg, #64748b 0%, #475569 100%)'
           }}
         >
-          <h2 className="tw-text-white tw-font-bold tw-text-3xl tw-flex tw-items-center tw-gap-3">
+          <h2 className="tw-text-2xl tw-font-bold tw-text-white tw-flex tw-items-center tw-gap-3">
             <i className="fas fa-tools"></i>
-            Panel de Administración
+            Panel de administración
           </h2>
         </div>
 

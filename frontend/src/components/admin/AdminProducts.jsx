@@ -195,7 +195,7 @@ function AdminProducts() {
               }}
             >
               <i className="fas fa-plus tw-mr-1"></i>
-              <span className="tw-hidden md:tw-inline">Crear Producto</span>
+              <span className="tw-hidden md:tw-inline">Crear producto</span>
               <span className="md:tw-hidden">Crear</span>
             </button>
           </div>

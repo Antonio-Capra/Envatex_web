@@ -75,7 +75,7 @@ function ProductModal({ show, handleClose, handleSubmit, productData }) {
           >
             <h3 className="tw-text-white tw-font-bold tw-text-2xl tw-flex tw-items-center tw-gap-3">
               <i className={`fas ${productData ? 'fa-edit' : 'fa-plus-circle'}`}></i>
-              {productData ? 'Editar Producto' : 'Crear Producto'}
+              {productData ? 'Editar producto' : 'Crear producto'}
             </h3>
             <button
               onClick={handleClose}
@@ -92,7 +92,7 @@ function ProductModal({ show, handleClose, handleSubmit, productData }) {
               <div>
                 <label className="tw-block tw-text-sm tw-font-semibold tw-text-slate-700 tw-mb-2">
                   <i className="fas fa-tag tw-mr-2 tw-text-slate-500"></i>
-                  Nombre del Producto *
+                  Nombre del producto *
                 </label>
                 <input
                   type="text"
@@ -141,7 +141,7 @@ function ProductModal({ show, handleClose, handleSubmit, productData }) {
               <div>
                 <label className="tw-block tw-text-sm tw-font-semibold tw-text-slate-700 tw-mb-2">
                   <i className="fas fa-image tw-mr-2 tw-text-slate-500"></i>
-                  Imagen del Producto
+                  Imagen del producto
                 </label>
                 <input
                   type="file"
@@ -188,7 +188,7 @@ function ProductModal({ show, handleClose, handleSubmit, productData }) {
                   }}
                 >
                   <i className={`fas ${productData ? 'fa-save' : 'fa-plus'} tw-mr-2`}></i>
-                  {productData ? 'Guardar Cambios' : 'Crear Producto'}
+                  {productData ? 'Guardar cambios' : 'Crear producto'}
                 </button>
               </div>
             </form>

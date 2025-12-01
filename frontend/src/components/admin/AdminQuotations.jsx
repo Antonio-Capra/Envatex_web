@@ -187,6 +187,15 @@ function AdminQuotations() {
                               {quotation.status ?? '—'}
                             </span>
                           </p>
+                          {quotation.customer_comments && (
+                            <div className="tw-mt-4 tw-p-4 tw-bg-blue-50 tw-rounded-lg tw-border tw-border-blue-200">
+                              <p className="tw-font-semibold tw-text-slate-700 tw-mb-2 tw-flex tw-items-center tw-gap-2">
+                                <i className="fas fa-comment tw-text-blue-500"></i>
+                                Comentarios del cliente:
+                              </p>
+                              <p className="tw-text-slate-600 tw-italic">{quotation.customer_comments}</p>
+                            </div>
+                          )}
                         </div>
 
                         {/* Items */}
@@ -260,7 +269,7 @@ function AdminQuotations() {
                               }}
                             >
                               <i className="fas fa-paper-plane tw-mr-2"></i>
-                              Enviar Respuesta
+                              Enviar respuesta
                             </button>
                           </div>
                         </div>
