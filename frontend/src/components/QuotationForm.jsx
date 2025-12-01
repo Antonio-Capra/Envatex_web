@@ -80,16 +80,17 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
             {items.map((item, idx) => (
               <div
                 key={item.product.id ?? item.product_id ?? idx}
-                className="tw-flex tw-items-center tw-justify-between tw-p-4 tw-bg-white tw-rounded-xl tw-gap-4 tw-border tw-border-slate-200"
+                className="tw-p-4 tw-bg-white tw-rounded-xl tw-border tw-border-slate-200"
               >
-                <div className="tw-flex-1 tw-min-w-0">
-                  <p className="tw-font-semibold tw-text-slate-800 tw-truncate">
+                {/* Nombre del producto */}
+                <div className="tw-mb-3">
+                  <p className="tw-font-semibold tw-text-slate-800 tw-text-sm sm:tw-text-base">
                     {item.product?.name ?? item.name}
                   </p>
                 </div>
                 
-                {/* Contador +/- */}
-                <div className="tw-flex tw-items-center tw-gap-2 tw-flex-shrink-0">
+                {/* Contador +/- centrado en mobile */}
+                <div className="tw-flex tw-items-center tw-justify-center tw-gap-3">
                   <button
                     onClick={() => onRemoveItem(item.product?.id ?? item.product_id)}
                     onMouseEnter={(e) => {
@@ -98,7 +99,7 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = 'scale(1)';
                     }}
-                    className="tw-w-8 tw-h-8 tw-rounded-lg tw-text-white tw-font-bold tw-text-sm tw-transition-all tw-duration-200 tw-flex tw-items-center tw-justify-center tw-border-0"
+                    className="tw-w-10 tw-h-10 tw-rounded-lg tw-text-white tw-font-bold tw-text-base tw-transition-all tw-duration-200 tw-flex tw-items-center tw-justify-center tw-border-0"
                     style={{
                       background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
                     }}
@@ -106,7 +107,7 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
                     <i className="fas fa-minus"></i>
                   </button>
                   
-                  <div className="tw-w-10 tw-text-center tw-py-1 tw-px-2 tw-bg-white tw-rounded-lg tw-font-bold tw-text-slate-700 tw-text-sm">
+                  <div className="tw-min-w-[3rem] tw-text-center tw-py-2 tw-px-3 tw-bg-slate-100 tw-rounded-lg tw-font-bold tw-text-slate-700 tw-text-base">
                     {item.quantity}
                   </div>
                   
@@ -118,7 +119,7 @@ function QuotationForm({ items = [], onRemoveItem, onClearCart, onAddToCart }) {
                     onMouseLeave={(e) => {
                       e.currentTarget.style.transform = 'scale(1)';
                     }}
-                    className="tw-w-8 tw-h-8 tw-rounded-lg tw-text-white tw-font-bold tw-text-sm tw-transition-all tw-duration-200 tw-flex tw-items-center tw-justify-center tw-border-0"
+                    className="tw-w-10 tw-h-10 tw-rounded-lg tw-text-white tw-font-bold tw-text-base tw-transition-all tw-duration-200 tw-flex tw-items-center tw-justify-center tw-border-0"
                     style={{
                       background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%)'
                     }}
