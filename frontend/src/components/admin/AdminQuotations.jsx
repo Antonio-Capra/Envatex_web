@@ -70,6 +70,8 @@ function AdminQuotations() {
 
   const handleSendResponse = async (id) => {
     const text = (responseTexts[id] || '').trim();
+    console.log('📤 Sending response for quotation', id, 'Text:', text);
+    
     if (!text) {
       setSubmitStatus(prev => ({ ...prev, [id]: { error: 'La respuesta no puede estar vacía.' } }));
       return;
@@ -78,15 +80,21 @@ function AdminQuotations() {
     setSubmitStatus(prev => ({ ...prev, [id]: { loading: true } }));
     try {
       const token = localStorage.getItem('access_token');
+      console.log('🔑 Token:', token ? 'Found' : 'Missing');
+      
       const res = await axios.patch(`${API_BASE}/api/quotations/${id}`, { admin_response: text }, {
         headers: { Authorization: 'Bearer ' + token }
       });
+      
+      console.log('✅ Response sent successfully:', res.data);
+      
       const updated = res.data?.quotation;
       if (updated) {
         setQuotations(prev => prev.map(q => (q.id === updated.id ? updated : q)));
         setSubmitStatus(prev => ({ ...prev, [id]: { success: 'Respuesta enviada.' } }));
       }
     } catch (err) {
+      console.error('❌ Error sending response:', err);
       setSubmitStatus(prev => ({ ...prev, [id]: { error: 'Error al enviar la respuesta.' } }));
     }
   };
