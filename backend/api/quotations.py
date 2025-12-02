@@ -119,9 +119,9 @@ def update_quotation(id):
                 </tr>
                 """
             
-            # URL del logo (desde el frontend desplegado o localhost en desarrollo)
-            frontend_url = os.getenv('FRONTEND_URL', 'https://envatex-frontend.onrender.com')
-            logo_url = f"{frontend_url}/2.png"
+            # URL del logo desde Cloudinary para máxima confiabilidad en emails
+            cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME', 'dtw6nypav')
+            logo_url = f"https://res.cloudinary.com/{cloud_name}/image/upload/qhbqltvbxzezwpksjy4n"
             
             html_content = f"""
             <html>
