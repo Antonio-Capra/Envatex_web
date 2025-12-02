@@ -32,29 +32,29 @@ export default function Landing() {
         <div className="tw-relative tw-bg-white tw-rounded-[2rem] tw-overflow-hidden tw-border tw-border-black/5" 
              style={{boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08)'}}>
           
-          <div className="tw-px-8 tw-py-16 md:tw-py-20 tw-text-center">
-            {/* Logo elegante */}
-            <div className="tw-mb-10 tw-flex tw-justify-center">
+          <div className="tw-px-8 tw-py-12 md:tw-py-16 tw-text-center">
+            {/* Logo más compacto */}
+            <div className="tw-mb-6 tw-flex tw-justify-center">
               <img 
                 src="/2.png" 
                 alt="Logo Envatex" 
-                className="tw-h-48 tw-w-auto"
+                className="tw-h-32 md:tw-h-36 tw-w-auto"
                 style={{filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))'}}
               />
             </div>
 
             {/* Título elegante */}
-            <h1 className="tw-font-bold tw-mb-6 tw-text-slate-600 tw-leading-tight" 
+            <h1 className="tw-font-bold tw-mb-4 tw-text-slate-600 tw-leading-tight" 
                 style={{
-                  fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                  fontSize: 'clamp(1.75rem, 5vw, 3rem)',
                   letterSpacing: '-0.02em'
                 }}>
               Soluciones textiles profesionales
             </h1>
 
             {/* Descripción refinada */}
-            <p className="tw-text-slate-500 tw-mb-12 tw-max-w-[45rem] tw-mx-auto tw-leading-relaxed tw-font-normal"
-               style={{fontSize: 'clamp(1.125rem, 2vw, 1.375rem)'}}>
+            <p className="tw-text-slate-500 tw-mb-8 tw-max-w-[45rem] tw-mx-auto tw-leading-relaxed tw-font-normal"
+               style={{fontSize: 'clamp(1rem, 2vw, 1.25rem)'}}>
               Impulsa tu empresa con productos textiles de alta calidad, atención personalizada y entregas rápidas en todo el país.
             </p>
 
