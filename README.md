@@ -49,8 +49,7 @@ Envatex_web/
 │   ├── wsgi.py             # Entry point para Gunicorn
 │   ├── init_db.py          # Inicialización de BD en deploy
 │   ├── requirements.txt    # Dependencias Python
-│   ├── Pipfile             # Gestión de entorno virtual
-│   ├── Makefile            # Comandos de desarrollo
+│   ├── Pipfile             # Gestión de entorno virtual (dev local)
 │   ├── api/                # Blueprints de la API
 │   │   ├── auth.py         # Autenticación JWT
 │   │   ├── products.py     # CRUD de productos
@@ -113,11 +112,6 @@ Frontend disponible en: http://localhost:3000
 
 > 📖 Para más detalles, consulta la [Guía de Inicio Rápido](docs/INICIO_RAPIDO.md)
 
-## 🔐 Seguridad
-
-- ❌ **NO subir** archivos `.env` a Git
-- ✅ Credenciales protegidas en archivos `.env`
-- ✅ `.gitignore` configurado correctamente
 
 ## ✨ Características
 
@@ -212,11 +206,13 @@ REACT_APP_API_URL        # https://envatex-backend.onrender.com
 ```bash
 cd backend
 
-# Crear entorno virtual
+# Opción 1: Usando Pipenv (recomendado para desarrollo)
+pipenv install
+pipenv shell
+
+# Opción 2: Usando venv tradicional
 python -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
-
-# Instalar dependencias
 pip install -r requirements.txt
 
 # Configurar variables de entorno
@@ -230,9 +226,9 @@ flask db upgrade
 python scripts/create_admin.py
 
 # Iniciar servidor
+pipenv run start  # Si usas Pipenv
+# O directamente:
 flask run
-# O usando Make
-make start
 ```
 
 Backend disponible en: http://localhost:5000
@@ -254,15 +250,24 @@ npm start
 
 Frontend disponible en: http://localhost:3000
 
-### Scripts de Desarrollo
+### Scripts de Conveniencia
+
+Desde la raíz del proyecto:
 
 ```bash
-# Backend
-make install   # Instalar dependencias
-make start     # Iniciar servidor Flask
-make dev       # Modo desarrollo con reload
-make migrate   # Crear nueva migración
-make upgrade   # Aplicar migraciones
+# Iniciar backend
+./scripts/start-backend.sh
+
+# Iniciar frontend
+./scripts/start-frontend.sh
+```
+
+### Comandos Útiles
+
+```bash
+# Backend - Migraciones
+flask db migrate -m "descripción"  # Crear nueva migración
+flask db upgrade                    # Aplicar migraciones
 
 # Frontend
 npm start      # Servidor de desarrollo
